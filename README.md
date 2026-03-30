@@ -160,33 +160,6 @@ npx expo start --tunnel -c
   - Local Network
   - Cellular Data (optional)
 
-### Tunnel install issue (`@expo/ngrok`)
-If tunnel fails due to global npm permission:
-
-```bash
-mkdir -p ~/.npm-global
-npm config set prefix '~/.npm-global'
-echo 'export PATH="$HOME/.npm-global/bin:$PATH"' >> ~/.zshrc
-source ~/.zshrc
-npm install -g @expo/ngrok@^4.1.0
-```
-
-## GitHub Publishing
-
-```bash
-cd /Users/g.o.a.t/Desktop/LocalServicesApp
-git init
-git add .
-git commit -m "Initial commit"
-git branch -M main
-git remote add origin https://github.com/<your-username>/<repo-name>.git
-git push -u origin main
-```
-
-## Current User Profile in App
-- Name: **Krish**
-- Email: **rawatkrish48@gmail.com**
-
 ## How It Is Different from Traditional Apps
 
 - Real-time location-aware discovery instead of static directory listing
