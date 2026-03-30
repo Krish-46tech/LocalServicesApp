@@ -1,0 +1,28 @@
+{
+  "expo": {
+    "name": "Local Services Finder",
+    "slug": "local-services-finder",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#0B1220"
+      }
+    },
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Allow Local Services Finder to access your location to show nearby providers."
+        }
+      ]
+    ]
+  }
+}
