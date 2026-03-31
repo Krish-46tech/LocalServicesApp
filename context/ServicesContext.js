@@ -2,6 +2,7 @@ import React, { createContext, useCallback, useContext, useEffect, useMemo, useR
 import { SERVICES as MOCK_SERVICES } from '../data/services';
 import { fetchNearbyLiveServices } from '../data/liveServices';
 import { useCurrentLocation } from '../hooks/useCurrentLocation';
+import { addTrustSignals } from '../data/ai';
 
 const ServicesContext = createContext(null);
 
@@ -34,13 +35,13 @@ export function ServicesProvider({ children }) {
       setLoading(true);
       const live = await fetchNearbyLiveServices(targetRegion.latitude, targetRegion.longitude);
       if (requestId !== requestIdRef.current) return;
-      setServices(live);
+      setServices(live.map((service) => addTrustSignals(service, 'live')));
       setSource('live');
       setError('');
       setLastUpdated(new Date());
     } catch (e) {
       if (requestId !== requestIdRef.current) return;
-      setServices(MOCK_SERVICES);
+      setServices(MOCK_SERVICES.map((service) => addTrustSignals(service, 'fallback')));
       setSource('fallback');
       setError('Live nearby services are temporarily unavailable. Showing fallback providers.');
       setLastUpdated(new Date());

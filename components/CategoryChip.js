@@ -1,10 +1,13 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { THEME } from '../constants/theme';
 import { AppText } from './AppText';
 import { ScalePressable } from './ScalePressable';
+import { useAppTheme } from '../context/ThemeContext';
 
 export function CategoryChip({ label, active, onPress }) {
+  const { theme } = useAppTheme();
+  const styles = createStyles(theme);
+
   return (
     <ScalePressable onPress={onPress} scaleTo={0.95}>
       <AppText
@@ -17,20 +20,22 @@ export function CategoryChip({ label, active, onPress }) {
   );
 }
 
-const styles = StyleSheet.create({
-  chip: {
-    paddingHorizontal: THEME.spacing.md,
-    paddingVertical: THEME.spacing.sm,
-    borderRadius: THEME.radius.pill,
-    marginRight: THEME.spacing.sm,
-    overflow: 'hidden'
-  },
-  activeChip: {
-    color: '#fff',
-    backgroundColor: THEME.colors.primary
-  },
-  inactiveChip: {
-    color: THEME.colors.textMuted,
-    backgroundColor: THEME.colors.surfaceMuted
-  }
-});
+function createStyles(theme) {
+  return StyleSheet.create({
+    chip: {
+      paddingHorizontal: theme.spacing.md,
+      paddingVertical: theme.spacing.sm,
+      borderRadius: theme.radius.pill,
+      marginRight: theme.spacing.sm,
+      overflow: 'hidden'
+    },
+    activeChip: {
+      color: '#fff',
+      backgroundColor: theme.colors.primary
+    },
+    inactiveChip: {
+      color: theme.colors.textMuted,
+      backgroundColor: theme.colors.surfaceMuted
+    }
+  });
+}

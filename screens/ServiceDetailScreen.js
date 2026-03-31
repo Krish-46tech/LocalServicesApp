@@ -8,15 +8,17 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue
 } from 'react-native-reanimated';
-import { THEME } from '../constants/theme';
 import { AppText } from '../components/AppText';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { useServices } from '../context/ServicesContext';
 import { SERVICES as MOCK_SERVICES } from '../data/services';
+import { useAppTheme } from '../context/ThemeContext';
 
 const HEADER_HEIGHT = 300;
 
 export function ServiceDetailScreen({ route }) {
+  const { theme } = useAppTheme();
+  const styles = createStyles(theme);
   const scrollY = useSharedValue(0);
   const { services, source } = useServices();
   const serviceId = route.params?.serviceId;
@@ -60,8 +62,29 @@ export function ServiceDetailScreen({ route }) {
             {service.name}
           </AppText>
           <AppText style={styles.liveText}>{source === 'live' ? 'Live listing from nearby area' : 'Fallback listing'}</AppText>
+
+          {!!service.trust && (
+            <View style={styles.trustPanel}>
+              <View style={styles.trustHead}>
+                <Ionicons
+                  name={service.trust.flagged ? 'alert-circle' : 'shield-checkmark'}
+                  size={16}
+                  color={service.trust.flagged ? theme.colors.warning : theme.colors.success}
+                />
+                <AppText weight="medium">
+                  {service.trust.level} ({service.trust.score}/100)
+                </AppText>
+              </View>
+              {service.trust.reasons?.map((reason) => (
+                <AppText key={reason} style={styles.trustReason}>
+                  • {reason}
+                </AppText>
+              ))}
+            </View>
+          )}
+
           <View style={styles.metaRow}>
-            <Ionicons name="star" size={16} color={THEME.colors.warning} />
+            <Ionicons name="star" size={16} color={theme.colors.warning} />
             <AppText weight="medium" style={styles.metaText}>
               {service.rating}
             </AppText>
@@ -76,7 +99,7 @@ export function ServiceDetailScreen({ route }) {
             <View style={styles.statItem}>
               <AppText style={styles.statLabel}>Category</AppText>
               <AppText weight="bold" style={styles.statValue}>
-                {service.category}
+                {service.category.replace('_', ' ')}
               </AppText>
             </View>
             <View style={styles.statItem}>
@@ -113,91 +136,111 @@ export function ServiceDetailScreen({ route }) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: THEME.colors.background
-  },
-  content: {
-    paddingBottom: 50
-  },
-  heroWrap: {
-    height: HEADER_HEIGHT,
-    overflow: 'hidden'
-  },
-  heroImage: {
-    width: '100%',
-    height: '100%'
-  },
-  infoCard: {
-    marginTop: -30,
-    borderTopLeftRadius: THEME.radius.lg,
-    borderTopRightRadius: THEME.radius.lg,
-    backgroundColor: THEME.colors.background,
-    paddingHorizontal: THEME.spacing.lg,
-    paddingTop: THEME.spacing.lg
-  },
-  title: {
-    fontSize: 28,
-    marginBottom: THEME.spacing.xs,
-    textAlign: 'left'
-  },
-  liveText: {
-    color: THEME.colors.textMuted,
-    marginBottom: THEME.spacing.sm,
-    textAlign: 'left'
-  },
-  metaRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-    marginBottom: THEME.spacing.md
-  },
-  metaText: {
-    color: THEME.colors.textMuted,
-    fontSize: 14,
-    marginLeft: 5,
-    textAlign: 'left'
-  },
-  metaDot: {
-    marginHorizontal: THEME.spacing.xs,
-    color: THEME.colors.textMuted
-  },
-  description: {
-    lineHeight: 22,
-    color: THEME.colors.text,
-    marginBottom: THEME.spacing.lg,
-    textAlign: 'left'
-  },
-  statRow: {
-    flexDirection: 'row',
-    gap: THEME.spacing.sm,
-    marginBottom: THEME.spacing.md
-  },
-  statItem: {
-    flex: 1,
-    padding: THEME.spacing.sm,
-    borderRadius: THEME.radius.md,
-    backgroundColor: THEME.colors.surface,
-    ...THEME.shadow
-  },
-  statLabel: {
-    color: THEME.colors.textMuted,
-    fontSize: 12,
-    marginBottom: 2,
-    textAlign: 'left'
-  },
-  statValue: {
-    fontSize: 14,
-    textTransform: 'capitalize',
-    textAlign: 'left'
-  },
-  address: {
-    color: THEME.colors.textMuted,
-    marginBottom: THEME.spacing.md,
-    textAlign: 'left'
-  },
-  button: {
-    marginBottom: THEME.spacing.sm
-  }
-});
+function createStyles(theme) {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.colors.background
+    },
+    content: {
+      paddingBottom: 50
+    },
+    heroWrap: {
+      height: HEADER_HEIGHT,
+      overflow: 'hidden'
+    },
+    heroImage: {
+      width: '100%',
+      height: '100%'
+    },
+    infoCard: {
+      marginTop: -30,
+      borderTopLeftRadius: theme.radius.lg,
+      borderTopRightRadius: theme.radius.lg,
+      backgroundColor: theme.colors.background,
+      paddingHorizontal: theme.spacing.lg,
+      paddingTop: theme.spacing.lg
+    },
+    title: {
+      fontSize: 28,
+      marginBottom: theme.spacing.xs,
+      textAlign: 'left'
+    },
+    liveText: {
+      color: theme.colors.textMuted,
+      marginBottom: theme.spacing.sm,
+      textAlign: 'left'
+    },
+    trustPanel: {
+      borderWidth: 1,
+      borderColor: theme.colors.border,
+      backgroundColor: theme.colors.surface,
+      borderRadius: theme.radius.md,
+      padding: theme.spacing.sm,
+      marginBottom: theme.spacing.md
+    },
+    trustHead: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 6,
+      marginBottom: 6
+    },
+    trustReason: {
+      color: theme.colors.textMuted,
+      fontSize: 12
+    },
+    metaRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      flexWrap: 'wrap',
+      marginBottom: theme.spacing.md
+    },
+    metaText: {
+      color: theme.colors.textMuted,
+      fontSize: 14,
+      marginLeft: 5,
+      textAlign: 'left'
+    },
+    metaDot: {
+      marginHorizontal: theme.spacing.xs,
+      color: theme.colors.textMuted
+    },
+    description: {
+      lineHeight: 22,
+      color: theme.colors.text,
+      marginBottom: theme.spacing.lg,
+      textAlign: 'left'
+    },
+    statRow: {
+      flexDirection: 'row',
+      gap: theme.spacing.sm,
+      marginBottom: theme.spacing.md
+    },
+    statItem: {
+      flex: 1,
+      padding: theme.spacing.sm,
+      borderRadius: theme.radius.md,
+      backgroundColor: theme.colors.surface,
+      ...theme.shadow
+    },
+    statLabel: {
+      color: theme.colors.textMuted,
+      fontSize: 12,
+      marginBottom: 2,
+      textAlign: 'left'
+    },
+    statValue: {
+      fontSize: 14,
+      textTransform: 'capitalize',
+      textAlign: 'left'
+    },
+    address: {
+      color: theme.colors.textMuted,
+      marginBottom: theme.spacing.md,
+      textAlign: 'left'
+    },
+    button: {
+      marginBottom: theme.spacing.sm
+    }
+  });
+}

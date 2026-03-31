@@ -4,12 +4,12 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CATEGORIES } from '../data/categories';
 import { filterServices, sortServices } from '../data/helpers';
-import { THEME } from '../constants/theme';
 import { AppText } from '../components/AppText';
 import { CategoryChip } from '../components/CategoryChip';
 import { AnimatedSearchBar } from '../components/AnimatedSearchBar';
 import { ServiceCard } from '../components/ServiceCard';
 import { useServices } from '../context/ServicesContext';
+import { useAppTheme } from '../context/ThemeContext';
 
 const SORT_OPTIONS = [
   { id: 'topRated', label: 'Top rated' },
@@ -18,6 +18,8 @@ const SORT_OPTIONS = [
 ];
 
 export function ServiceListScreen({ navigation }) {
+  const { theme } = useAppTheme();
+  const styles = createStyles(theme);
   const insets = useSafeAreaInsets();
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
@@ -34,8 +36,8 @@ export function ServiceListScreen({ navigation }) {
       <FlatList
         data={listData}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={[styles.content, { paddingTop: insets.top + THEME.spacing.md }]}
-        refreshControl={<RefreshControl refreshing={loading} onRefresh={refresh} tintColor={THEME.colors.primary} />}
+        contentContainerStyle={[styles.content, { paddingTop: insets.top + theme.spacing.md }]}
+        refreshControl={<RefreshControl refreshing={loading} onRefresh={refresh} tintColor={theme.colors.primary} />}
         ListHeaderComponent={
           <View>
             <AppText weight="bold" style={styles.title}>
@@ -104,49 +106,51 @@ export function ServiceListScreen({ navigation }) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: THEME.colors.background
-  },
-  content: {
-    paddingHorizontal: THEME.spacing.lg,
-    paddingTop: THEME.spacing.xxl,
-    paddingBottom: 120
-  },
-  title: {
-    fontSize: 28,
-    marginBottom: THEME.spacing.xs,
-    textAlign: 'left'
-  },
-  subTitle: {
-    color: THEME.colors.textMuted,
-    marginBottom: THEME.spacing.md,
-    textAlign: 'left'
-  },
-  label: {
-    fontSize: 14,
-    color: THEME.colors.textMuted,
-    marginBottom: THEME.spacing.xs,
-    textAlign: 'left'
-  },
-  chipsRow: {
-    marginBottom: THEME.spacing.md
-  },
-  empty: {
-    marginTop: THEME.spacing.lg,
-    color: THEME.colors.textMuted,
-    textAlign: 'left'
-  },
-  warning: {
-    color: THEME.colors.warning,
-    marginBottom: THEME.spacing.xs,
-    textAlign: 'left'
-  },
-  updatedText: {
-    color: THEME.colors.textMuted,
-    fontSize: 12,
-    marginBottom: THEME.spacing.md,
-    textAlign: 'left'
-  }
-});
+function createStyles(theme) {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.colors.background
+    },
+    content: {
+      paddingHorizontal: theme.spacing.lg,
+      paddingTop: theme.spacing.xxl,
+      paddingBottom: 120
+    },
+    title: {
+      fontSize: 28,
+      marginBottom: theme.spacing.xs,
+      textAlign: 'left'
+    },
+    subTitle: {
+      color: theme.colors.textMuted,
+      marginBottom: theme.spacing.md,
+      textAlign: 'left'
+    },
+    label: {
+      fontSize: 14,
+      color: theme.colors.textMuted,
+      marginBottom: theme.spacing.xs,
+      textAlign: 'left'
+    },
+    chipsRow: {
+      marginBottom: theme.spacing.md
+    },
+    empty: {
+      marginTop: theme.spacing.lg,
+      color: theme.colors.textMuted,
+      textAlign: 'left'
+    },
+    warning: {
+      color: theme.colors.warning,
+      marginBottom: theme.spacing.xs,
+      textAlign: 'left'
+    },
+    updatedText: {
+      color: theme.colors.textMuted,
+      fontSize: 12,
+      marginBottom: theme.spacing.md,
+      textAlign: 'left'
+    }
+  });
+}

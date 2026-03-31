@@ -5,27 +5,29 @@ import { HomeScreen } from '../screens/HomeScreen';
 import { ServiceListScreen } from '../screens/ServiceListScreen';
 import { MapScreen } from '../screens/MapScreen';
 import { ProfileScreen } from '../screens/ProfileScreen';
-import { THEME } from '../constants/theme';
+import { useAppTheme } from '../context/ThemeContext';
 
 const Tab = createBottomTabNavigator();
 
 export function MainTabs() {
+  const { theme } = useAppTheme();
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
-        tabBarActiveTintColor: THEME.colors.primary,
-        tabBarInactiveTintColor: THEME.colors.textMuted,
+        tabBarActiveTintColor: theme.colors.primary,
+        tabBarInactiveTintColor: theme.colors.textMuted,
         tabBarStyle: {
           height: 72,
           borderTopWidth: 0,
           paddingBottom: 10,
           paddingTop: 8,
-          backgroundColor: THEME.colors.surface,
-          ...THEME.shadow
+          backgroundColor: theme.colors.surface,
+          ...theme.shadow
         },
         tabBarLabelStyle: {
-          fontFamily: THEME.font.medium,
+          fontFamily: theme.font.medium,
           fontSize: 12
         },
         tabBarIcon: ({ color, size }) => {

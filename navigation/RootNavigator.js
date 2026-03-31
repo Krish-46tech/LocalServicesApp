@@ -2,17 +2,21 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { MainTabs } from './MainTabs';
 import { ServiceDetailScreen } from '../screens/ServiceDetailScreen';
-import { THEME } from '../constants/theme';
+import { useAppTheme } from '../context/ThemeContext';
 
 const Stack = createNativeStackNavigator();
 
 export function RootNavigator() {
+  const { theme } = useAppTheme();
+
   return (
     <Stack.Navigator
       screenOptions={{
-        headerTitleStyle: { fontFamily: THEME.font.bold, color: THEME.colors.text },
+        headerTitleStyle: { fontFamily: theme.font.bold, color: theme.colors.text },
+        headerStyle: { backgroundColor: theme.colors.surface },
+        headerTintColor: theme.colors.text,
         headerShadowVisible: false,
-        contentStyle: { backgroundColor: THEME.colors.background },
+        contentStyle: { backgroundColor: theme.colors.background },
         animation: 'slide_from_right'
       }}
     >

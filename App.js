@@ -6,27 +6,28 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useFonts, Manrope_400Regular, Manrope_500Medium, Manrope_700Bold } from '@expo-google-fonts/manrope';
 import { RootNavigator } from './navigation/RootNavigator';
-import { THEME } from './constants/theme';
 import { ServicesProvider } from './context/ServicesContext';
+import { ThemeProvider, useAppTheme } from './context/ThemeContext';
 
-const navTheme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    background: THEME.colors.background,
-    card: THEME.colors.surface,
-    text: THEME.colors.text,
-    border: THEME.colors.border,
-    primary: THEME.colors.primary
-  }
-};
-
-export default function App() {
+function AppShell() {
+  const { theme, isDark } = useAppTheme();
   const [fontsLoaded] = useFonts({
     Manrope_400Regular,
     Manrope_500Medium,
     Manrope_700Bold
   });
+
+  const navTheme = {
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      background: theme.colors.background,
+      card: theme.colors.surface,
+      text: theme.colors.text,
+      border: theme.colors.border,
+      primary: theme.colors.primary
+    }
+  };
 
   if (!fontsLoaded) {
     return (
@@ -35,22 +36,30 @@ export default function App() {
           flex: 1,
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: THEME.colors.background
+          backgroundColor: theme.colors.background
         }}
       >
-        <ActivityIndicator size="large" color={THEME.colors.primary} />
+        <ActivityIndicator size="large" color={theme.colors.primary} />
       </View>
     );
   }
 
   return (
+    <ServicesProvider>
+      <NavigationContainer theme={navTheme}>
+        <StatusBar style={isDark ? 'light' : 'dark'} />
+        <RootNavigator />
+      </NavigationContainer>
+    </ServicesProvider>
+  );
+}
+
+export default function App() {
+  return (
     <SafeAreaProvider>
-      <ServicesProvider>
-        <NavigationContainer theme={navTheme}>
-          <StatusBar style="dark" />
-          <RootNavigator />
-        </NavigationContainer>
-      </ServicesProvider>
+      <ThemeProvider>
+        <AppShell />
+      </ThemeProvider>
     </SafeAreaProvider>
   );
 }

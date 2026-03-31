@@ -1,6 +1,6 @@
 # Local Services Finder
 
-A cross-platform mobile app built with **React Native + Expo** to discover nearby local services such as plumbers, electricians, tutors, cleaners, painters, and mechanics.
+A cross-platform mobile app built with **React Native + Expo** to discover nearby local services such as plumbers, electricians, tutors, cleaners, painters, mechanics, and more.
 
 The app focuses on modern UI/UX, smooth animations, and real-time location-aware service discovery.
 
@@ -9,8 +9,9 @@ The app focuses on modern UI/UX, smooth animations, and real-time location-aware
 Local Services Finder helps users:
 - Discover nearby service providers based on live location
 - Select a custom search area on map to explore services in other locations
-- Browse service cards with rating, distance, category, and pricing in INR (`₹`)
+- Browse service cards with rating, distance, category, trust score, and pricing in INR (`₹`)
 - View service details and initiate direct call actions
+- Use AI issue classification to map user problems to the right service category
 
 ## What Problem It Solves
 
@@ -22,6 +23,8 @@ Traditional local-service discovery methods are often:
 This app improves that by combining:
 - **Live geolocation + map-based discovery**
 - **Custom area selection** for sparse locations
+- **AI-assisted issue-to-service classification**
+- **Trust/safety signal scoring** for provider confidence
 - **Modern, high-polish mobile UX** with reusable architecture
 
 ## Tech Stack
@@ -46,8 +49,9 @@ This app improves that by combining:
 - `react-native-maps`
 - `expo-location`
 
-### Data Source
+### Data Sources
 - **OpenStreetMap Overpass API** (live nearby service entities)
+- **External AI API (OpenAI-compatible)** for issue classification
 
 ## Key Features
 
@@ -65,7 +69,7 @@ This app improves that by combining:
 - If results are sparse, auto-expands to **14 km**
 
 ### 4. Category + Search + Sort
-- Categories: plumber, electrician, tutor, cleaner, painter, mechanic
+- Categories include plumber, electrician, tutor, cleaner, painter, mechanic, carpenter, AC repair, pest control, beauty salon, mover, appliance repair
 - Search by name/category/address
 - Sort by top rated, nearest, best value
 
@@ -76,17 +80,24 @@ This app improves that by combining:
 - Service prices displayed in Indian Rupees (`₹`)
 - Price sorting works on numeric INR values
 
-### 7. Polished UX
-- Animated search bar interactions
-- Card press micro-interactions
-- Staggered/fade list animations
-- Parallax-style detail header motion
-- Consistent spacing, rounded surfaces, and elevation
+### 7. AI Issue Classifier
+- User describes issue (e.g. "AC not cooling")
+- App classifies best category, urgency, and confidence
+- Uses external AI API when key is configured
+- Falls back to local rule-based classifier if external AI is unavailable
+
+### 8. Safety / Trust Signals
+- Each listing gets a trust score and level using rating/reviews/contact/address/source checks
+- Trust badges shown on cards and details
+
+### 9. Dark / Light Theme Toggle
+- In-app appearance toggle from Profile screen
 
 ## App Screens
 
 - **Home Screen**
   - Search bar
+  - AI issue classifier input
   - Category chips
   - Featured + Nearby sections
 
@@ -97,6 +108,7 @@ This app improves that by combining:
 - **Service Detail Screen**
   - Hero image
   - Ratings/meta/details
+  - Trust/safety panel
   - Call + Book buttons
 
 - **Map Screen**
@@ -105,6 +117,7 @@ This app improves that by combining:
 
 - **Profile Screen**
   - User details
+  - Theme toggle
   - Saved services preview
 
 ## Folder Structure
@@ -112,8 +125,8 @@ This app improves that by combining:
 ```text
 components/      Reusable UI building blocks
 constants/       Theme tokens (colors, spacing, radius, shadows)
-context/         Shared app state (services, source, location flow)
-data/            Live data adapter + fallback/mock data + helpers
+context/         Shared app state (services, source, location flow, theme)
+data/            Live data adapter + AI + fallback/mock data + helpers
 hooks/           Reusable hooks (location)
 navigation/      Stack + tab navigation setup
 screens/         Feature screens
@@ -132,6 +145,20 @@ screens/         Feature screens
 cd /Users/g.o.a.t/Desktop/LocalServicesApp
 npm install
 ```
+
+### Configure External AI API
+
+1. Copy env template:
+```bash
+cp .env.example .env
+```
+
+2. Set your key in `.env`:
+- `EXPO_PUBLIC_AI_API_KEY`
+- optional: `EXPO_PUBLIC_AI_BASE_URL` (OpenAI-compatible base URL)
+- optional: `EXPO_PUBLIC_AI_MODEL`
+
+If no key is configured, classifier still works using local fallback rules.
 
 ### Run (recommended)
 
@@ -160,10 +187,39 @@ npx expo start --tunnel -c
   - Local Network
   - Cellular Data (optional)
 
+### Tunnel install issue (`@expo/ngrok`)
+If tunnel fails due to global npm permission:
+
+```bash
+mkdir -p ~/.npm-global
+npm config set prefix '~/.npm-global'
+echo 'export PATH="$HOME/.npm-global/bin:$PATH"' >> ~/.zshrc
+source ~/.zshrc
+npm install -g @expo/ngrok@^4.1.0
+```
+
+## GitHub Publishing
+
+```bash
+cd /Users/g.o.a.t/Desktop/LocalServicesApp
+git init
+git add .
+git commit -m "Initial commit"
+git branch -M main
+git remote add origin https://github.com/<your-username>/<repo-name>.git
+git push -u origin main
+```
+
+## Current User Profile in App
+- Name: **Krish**
+- Email: **rawatkrish48@gmail.com**
+
 ## How It Is Different from Traditional Apps
 
 - Real-time location-aware discovery instead of static directory listing
 - Map-driven custom area search for user-controlled service exploration
+- AI-assisted issue classification for faster problem resolution
+- Trust/safety scoring for listing quality confidence
 - Modern mobile UX with motion and interaction polish
 - Shared state architecture that updates all screens consistently
 - Practical fallback strategy for API/network instability
@@ -175,4 +231,3 @@ npx expo start --tunnel -c
 - Chat/WhatsApp contact actions
 - Backend integration for verified providers and user auth
 - Place search (type city/locality and jump on map)
-

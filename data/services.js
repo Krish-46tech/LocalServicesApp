@@ -134,5 +134,107 @@ export const SERVICES = [
     phone: '+1 (415) 555-0122',
     location: { latitude: 37.7477, longitude: -122.4201 },
     featured: false
+  },
+  {
+    id: 'svc_9',
+    name: 'CraftLine Carpentry',
+    category: 'carpenter',
+    rating: 4.7,
+    reviews: 121,
+    distanceKm: 4.4,
+    priceLabel: '₹900-2800 / job',
+    city: 'San Francisco',
+    description: 'Custom carpentry, furniture repair, modular fitting and woodwork finishing.',
+    image:
+      'https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=1200&q=80',
+    phone: '+1 (415) 555-0184',
+    address: '24 Howard St San Francisco CA',
+    location: { latitude: 37.7889, longitude: -122.3928 },
+    featured: false
+  },
+  {
+    id: 'svc_10',
+    name: 'CoolCare AC Services',
+    category: 'ac_repair',
+    rating: 4.8,
+    reviews: 164,
+    distanceKm: 3.1,
+    priceLabel: '₹700-2500 / visit',
+    city: 'San Francisco',
+    description: 'AC maintenance, gas refill, cooling diagnostics and emergency breakdown repair.',
+    image:
+      'https://images.unsplash.com/photo-1581094271901-8022df4466f9?auto=format&fit=crop&w=1200&q=80',
+    phone: '+1 (415) 555-0188',
+    address: '860 Market St San Francisco CA',
+    location: { latitude: 37.7847, longitude: -122.4078 },
+    featured: true
+  },
+  {
+    id: 'svc_11',
+    name: 'Shield Pest Experts',
+    category: 'pest_control',
+    rating: 4.6,
+    reviews: 93,
+    distanceKm: 5.4,
+    priceLabel: '₹1100-3400 / treatment',
+    city: 'San Francisco',
+    description: 'Termite, rodent and insect treatment plans for homes and small businesses.',
+    image:
+      'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=80',
+    phone: '+1 (415) 555-0192',
+    address: '210 King St San Francisco CA',
+    location: { latitude: 37.7758, longitude: -122.3932 },
+    featured: false
+  },
+  {
+    id: 'svc_12',
+    name: 'GlowNest Beauty Studio',
+    category: 'beauty_salon',
+    rating: 4.9,
+    reviews: 210,
+    distanceKm: 2.5,
+    priceLabel: '₹600-3000 / session',
+    city: 'San Francisco',
+    description: 'Hair, skin and bridal beauty services with hygiene-focused premium studios.',
+    image:
+      'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=1200&q=80',
+    phone: '+1 (415) 555-0195',
+    address: '39 Geary St San Francisco CA',
+    location: { latitude: 37.7871, longitude: -122.4045 },
+    featured: true
+  },
+  {
+    id: 'svc_13',
+    name: 'MoveSwift Relocations',
+    category: 'mover',
+    rating: 4.5,
+    reviews: 81,
+    distanceKm: 6.0,
+    priceLabel: '₹2500-12000 / move',
+    city: 'San Francisco',
+    description: 'Local shifting, packing, loading and apartment relocation support.',
+    image:
+      'https://images.unsplash.com/photo-1600518464441-9154a4dea21b?auto=format&fit=crop&w=1200&q=80',
+    phone: '+1 (415) 555-0179',
+    address: '500 3rd St San Francisco CA',
+    location: { latitude: 37.7807, longitude: -122.3901 },
+    featured: false
+  },
+  {
+    id: 'svc_14',
+    name: 'FixWell Appliance Care',
+    category: 'appliance_repair',
+    rating: 4.7,
+    reviews: 137,
+    distanceKm: 4.9,
+    priceLabel: '₹700-3200 / repair',
+    city: 'San Francisco',
+    description: 'Washing machine, refrigerator, microwave and small appliance repair experts.',
+    image:
+      'https://images.unsplash.com/photo-1581579188871-45ea61f2a6c8?auto=format&fit=crop&w=1200&q=80',
+    phone: '+1 (415) 555-0147',
+    address: '1300 Mission St San Francisco CA',
+    location: { latitude: 37.7744, longitude: -122.4142 },
+    featured: false
   }
 ];

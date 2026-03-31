@@ -1,15 +1,18 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { THEME } from '../constants/theme';
 import { AppText } from './AppText';
 import { ScalePressable } from './ScalePressable';
+import { useAppTheme } from '../context/ThemeContext';
 
 export function PrimaryButton({ label, onPress, icon, style, disabled = false }) {
+  const { theme } = useAppTheme();
+  const styles = createStyles(theme);
+
   return (
     <ScalePressable onPress={onPress} style={[style, disabled && styles.disabled]} disabled={disabled}>
       <LinearGradient
-        colors={[THEME.colors.primary, THEME.colors.primaryDark]}
+        colors={[theme.colors.primary, theme.colors.primaryDark]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={styles.button}
@@ -25,23 +28,25 @@ export function PrimaryButton({ label, onPress, icon, style, disabled = false })
   );
 }
 
-const styles = StyleSheet.create({
-  button: {
-    borderRadius: THEME.radius.md,
-    paddingVertical: THEME.spacing.md,
-    paddingHorizontal: THEME.spacing.lg
-  },
-  content: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: THEME.spacing.xs
-  },
-  label: {
-    color: '#fff',
-    fontSize: 16
-  },
-  disabled: {
-    opacity: 0.7
-  }
-});
+function createStyles(theme) {
+  return StyleSheet.create({
+    button: {
+      borderRadius: theme.radius.md,
+      paddingVertical: theme.spacing.md,
+      paddingHorizontal: theme.spacing.lg
+    },
+    content: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      gap: theme.spacing.xs
+    },
+    label: {
+      color: '#fff',
+      fontSize: 16
+    },
+    disabled: {
+      opacity: 0.7
+    }
+  });
+}

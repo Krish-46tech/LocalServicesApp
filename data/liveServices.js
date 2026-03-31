@@ -13,6 +13,24 @@ const CATEGORY_TAGS = {
   ],
   painter: [{ key: 'craft', value: 'painter' }],
   mechanic: [{ key: 'shop', value: 'car_repair' }],
+  carpenter: [{ key: 'craft', value: 'carpenter' }],
+  ac_repair: [
+    { key: 'shop', value: 'air_conditioning' },
+    { key: 'craft', value: 'hvac' }
+  ],
+  pest_control: [
+    { key: 'office', value: 'pest_control' },
+    { key: 'service', value: 'pest_control' }
+  ],
+  beauty_salon: [
+    { key: 'shop', value: 'beauty' },
+    { key: 'shop', value: 'hairdresser' }
+  ],
+  mover: [{ key: 'office', value: 'moving_company' }],
+  appliance_repair: [
+    { key: 'shop', value: 'electronics_repair' },
+    { key: 'craft', value: 'appliance_repair' }
+  ],
   all: [
     { key: 'shop', value: 'hardware' },
     { key: 'shop', value: 'doityourself' },
@@ -34,6 +52,18 @@ const CATEGORY_IMAGES = {
     'https://images.unsplash.com/photo-1562259949-e8e7689d7828?auto=format&fit=crop&w=1200&q=80',
   mechanic:
     'https://images.unsplash.com/photo-1487754180451-c456f719a1fc?auto=format&fit=crop&w=1200&q=80',
+  carpenter:
+    'https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=1200&q=80',
+  ac_repair:
+    'https://images.unsplash.com/photo-1581094271901-8022df4466f9?auto=format&fit=crop&w=1200&q=80',
+  pest_control:
+    'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=80',
+  beauty_salon:
+    'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=1200&q=80',
+  mover:
+    'https://images.unsplash.com/photo-1600518464441-9154a4dea21b?auto=format&fit=crop&w=1200&q=80',
+  appliance_repair:
+    'https://images.unsplash.com/photo-1581579188871-45ea61f2a6c8?auto=format&fit=crop&w=1200&q=80',
   all:
     'https://images.unsplash.com/photo-1556740738-b6a63e27c4df?auto=format&fit=crop&w=1200&q=80'
 };
@@ -130,6 +160,12 @@ function detectCategory(tags) {
   if (craft === 'electrician') return 'electrician';
   if (craft === 'painter') return 'painter';
   if (shop === 'car_repair') return 'mechanic';
+  if (craft === 'carpenter') return 'carpenter';
+  if (shop === 'air_conditioning' || craft === 'hvac') return 'ac_repair';
+  if (office === 'pest_control' || tags.service === 'pest_control') return 'pest_control';
+  if (shop === 'beauty' || shop === 'hairdresser') return 'beauty_salon';
+  if (office === 'moving_company') return 'mover';
+  if (shop === 'electronics_repair' || craft === 'appliance_repair') return 'appliance_repair';
   if (shop === 'laundry' || shop === 'dry_cleaning' || office === 'cleaning') return 'cleaner';
   if (amenity === 'school' || amenity === 'language_school' || office === 'educational_institution') {
     return 'tutor';
@@ -157,6 +193,12 @@ function priceLabelFromCategory(category) {
     cleaner: '₹1200-2600 / session',
     painter: '₹1500+ / quote',
     mechanic: '₹700-2000 / inspection',
+    carpenter: '₹900-2800 / job',
+    ac_repair: '₹700-2500 / visit',
+    pest_control: '₹1100-3400 / treatment',
+    beauty_salon: '₹600-3000 / session',
+    mover: '₹2500-12000 / move',
+    appliance_repair: '₹700-3200 / repair',
     all: '₹500+'
   };
 
@@ -171,6 +213,12 @@ function descriptionFromCategory(category) {
     cleaner: 'Nearby cleaning services currently available around you.',
     painter: 'Nearby painting professionals listed for your area.',
     mechanic: 'Nearby auto repair and mechanic services around your location.',
+    carpenter: 'Nearby carpenters and woodwork professionals around your area.',
+    ac_repair: 'Nearby AC maintenance and cooling repair specialists.',
+    pest_control: 'Nearby pest-control services for home and office treatment.',
+    beauty_salon: 'Nearby beauty and salon services listed around your location.',
+    mover: 'Nearby relocation and moving service providers.',
+    appliance_repair: 'Nearby home-appliance repair services in your selected area.',
     all: 'Nearby service provider fetched live from your current location.'
   };
 

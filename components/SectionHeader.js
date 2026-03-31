@@ -1,10 +1,13 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { THEME } from '../constants/theme';
 import { AppText } from './AppText';
 import { ScalePressable } from './ScalePressable';
+import { useAppTheme } from '../context/ThemeContext';
 
 export function SectionHeader({ title, actionLabel, onActionPress }) {
+  const { theme } = useAppTheme();
+  const styles = createStyles(theme);
+
   return (
     <View style={styles.container}>
       <AppText weight="bold" style={styles.title}>
@@ -21,18 +24,20 @@ export function SectionHeader({ title, actionLabel, onActionPress }) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: THEME.spacing.md
-  },
-  title: {
-    fontSize: 20
-  },
-  action: {
-    color: THEME.colors.primary,
-    fontSize: 14
-  }
-});
+function createStyles(theme) {
+  return StyleSheet.create({
+    container: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: theme.spacing.md
+    },
+    title: {
+      fontSize: 20
+    },
+    action: {
+      color: theme.colors.primary,
+      fontSize: 14
+    }
+  });
+}

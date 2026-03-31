@@ -4,12 +4,14 @@ import { Marker } from 'react-native-maps';
 import MapView from 'react-native-maps';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { THEME } from '../constants/theme';
 import { AppText } from '../components/AppText';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { useServices } from '../context/ServicesContext';
+import { useAppTheme } from '../context/ThemeContext';
 
 export function MapScreen() {
+  const { theme } = useAppTheme();
+  const styles = createStyles(theme);
   const insets = useSafeAreaInsets();
   const mapRef = useRef(null);
   const {
@@ -50,7 +52,7 @@ export function MapScreen() {
   if (loading && !region) {
     return (
       <View style={styles.centered}>
-        <ActivityIndicator size="large" color={THEME.colors.primary} />
+        <ActivityIndicator size="large" color={theme.colors.primary} />
         <AppText style={styles.loadingText}>Getting map ready...</AppText>
       </View>
     );
@@ -88,14 +90,14 @@ export function MapScreen() {
             coordinate={{ latitude: draftRegion.latitude, longitude: draftRegion.longitude }}
             title={hasPendingChanges ? 'Draft search area' : 'Active search area'}
             description={hasPendingChanges ? 'Tap Apply Area to refresh services' : 'Services are fetched for this area'}
-            pinColor={THEME.colors.primary}
+            pinColor={theme.colors.primary}
           />
         ) : null}
       </MapView>
 
       <View style={[styles.overlayCard, { top: insets.top + 12 }]}>
         <View style={styles.overlayRow}>
-          <Ionicons name="locate" size={18} color={THEME.colors.primary} />
+          <Ionicons name="locate" size={18} color={theme.colors.primary} />
           <AppText weight="bold">Choose area to discover services</AppText>
         </View>
         <AppText style={styles.sourceText}>
@@ -145,55 +147,57 @@ export function MapScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
-  centered: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: THEME.colors.background
-  },
-  loadingText: {
-    marginTop: THEME.spacing.sm,
-    color: THEME.colors.textMuted,
-    textAlign: 'left'
-  },
-  overlayCard: {
-    position: 'absolute',
-    left: THEME.spacing.lg,
-    right: THEME.spacing.lg,
-    backgroundColor: THEME.colors.surface,
-    borderRadius: THEME.radius.md,
-    padding: THEME.spacing.md,
-    ...THEME.shadow
-  },
-  overlayRow: {
-    flexDirection: 'row',
-    gap: THEME.spacing.xs,
-    alignItems: 'center'
-  },
-  sourceText: {
-    marginTop: THEME.spacing.xs,
-    color: THEME.colors.textMuted,
-    fontSize: 12,
-    textAlign: 'left'
-  },
-  errorText: {
-    marginTop: THEME.spacing.xs,
-    color: THEME.colors.warning,
-    fontSize: 13,
-    textAlign: 'left'
-  },
-  helperText: {
-    marginTop: THEME.spacing.xs,
-    color: THEME.colors.textMuted,
-    fontSize: 12,
-    textAlign: 'left'
-  },
-  button: {
-    marginTop: THEME.spacing.sm,
-    marginBottom: THEME.spacing.xs
-  }
-});
+function createStyles(theme) {
+  return StyleSheet.create({
+    container: {
+      flex: 1
+    },
+    centered: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: theme.colors.background
+    },
+    loadingText: {
+      marginTop: theme.spacing.sm,
+      color: theme.colors.textMuted,
+      textAlign: 'left'
+    },
+    overlayCard: {
+      position: 'absolute',
+      left: theme.spacing.lg,
+      right: theme.spacing.lg,
+      backgroundColor: theme.colors.surface,
+      borderRadius: theme.radius.md,
+      padding: theme.spacing.md,
+      ...theme.shadow
+    },
+    overlayRow: {
+      flexDirection: 'row',
+      gap: theme.spacing.xs,
+      alignItems: 'center'
+    },
+    sourceText: {
+      marginTop: theme.spacing.xs,
+      color: theme.colors.textMuted,
+      fontSize: 12,
+      textAlign: 'left'
+    },
+    errorText: {
+      marginTop: theme.spacing.xs,
+      color: theme.colors.warning,
+      fontSize: 13,
+      textAlign: 'left'
+    },
+    helperText: {
+      marginTop: theme.spacing.xs,
+      color: theme.colors.textMuted,
+      fontSize: 12,
+      textAlign: 'left'
+    },
+    button: {
+      marginTop: theme.spacing.sm,
+      marginBottom: theme.spacing.xs
+    }
+  });
+}

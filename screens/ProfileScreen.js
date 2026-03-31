@@ -1,22 +1,24 @@
 import React from 'react';
-import { FlatList, Image, StyleSheet, View } from 'react-native';
+import { FlatList, Image, StyleSheet, Switch, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { THEME } from '../constants/theme';
 import { AppText } from '../components/AppText';
 import { ServiceCard } from '../components/ServiceCard';
 import { useServices } from '../context/ServicesContext';
+import { useAppTheme } from '../context/ThemeContext';
 
 export function ProfileScreen({ navigation }) {
   const insets = useSafeAreaInsets();
   const { services } = useServices();
+  const { theme, mode, isDark, toggleMode } = useAppTheme();
+  const styles = createStyles(theme);
   const savedServices = services.slice(0, 3);
 
   return (
     <FlatList
       style={styles.container}
-      contentContainerStyle={[styles.content, { paddingTop: insets.top + THEME.spacing.md }]}
+      contentContainerStyle={[styles.content, { paddingTop: insets.top + theme.spacing.md }]}
       data={savedServices}
       keyExtractor={(item) => item.id}
       ListHeaderComponent={
@@ -34,8 +36,21 @@ export function ProfileScreen({ navigation }) {
               </AppText>
               <AppText style={styles.email}>rawatkrish48@gmail.com</AppText>
             </View>
-            <Ionicons name="chevron-forward" size={20} color={THEME.colors.textMuted} />
+            <Ionicons name="chevron-forward" size={20} color={theme.colors.textMuted} />
           </Animated.View>
+
+          <View style={styles.themeCard}>
+            <View>
+              <AppText weight="medium">Appearance</AppText>
+              <AppText style={styles.themeSub}>{isDark ? 'Dark Mode' : 'Light Mode'}</AppText>
+            </View>
+            <Switch
+              value={isDark}
+              onValueChange={toggleMode}
+              trackColor={{ false: theme.colors.border, true: theme.colors.primary }}
+              thumbColor="#fff"
+            />
+          </View>
 
           <View style={styles.metaGrid}>
             <View style={styles.metaItem}>
@@ -52,9 +67,9 @@ export function ProfileScreen({ navigation }) {
             </View>
             <View style={styles.metaItem}>
               <AppText weight="bold" style={styles.metaValue}>
-                Live
+                {mode === 'dark' ? 'Dark' : 'Light'}
               </AppText>
-              <AppText style={styles.metaLabel}>Mode</AppText>
+              <AppText style={styles.metaLabel}>Theme</AppText>
             </View>
           </View>
 
@@ -77,73 +92,90 @@ export function ProfileScreen({ navigation }) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: THEME.colors.background
-  },
-  content: {
-    paddingHorizontal: THEME.spacing.lg,
-    paddingTop: THEME.spacing.xxl,
-    paddingBottom: 120
-  },
-  profileCard: {
-    backgroundColor: THEME.colors.surface,
-    borderRadius: THEME.radius.lg,
-    padding: THEME.spacing.md,
-    flexDirection: 'row',
-    alignItems: 'center',
-    ...THEME.shadow
-  },
-  avatar: {
-    width: 56,
-    height: 56,
-    borderRadius: 28
-  },
-  userInfo: {
-    flex: 1,
-    marginLeft: THEME.spacing.sm
-  },
-  name: {
-    fontSize: 17,
-    textAlign: 'left'
-  },
-  email: {
-    color: THEME.colors.textMuted,
-    marginTop: 2,
-    fontSize: 13,
-    textAlign: 'left'
-  },
-  metaGrid: {
-    marginTop: THEME.spacing.md,
-    flexDirection: 'row',
-    gap: THEME.spacing.sm
-  },
-  metaItem: {
-    flex: 1,
-    padding: THEME.spacing.md,
-    borderRadius: THEME.radius.md,
-    backgroundColor: THEME.colors.surface,
-    alignItems: 'center',
-    ...THEME.shadow
-  },
-  metaValue: {
-    fontSize: 17,
-    textAlign: 'center'
-  },
-  metaLabel: {
-    marginTop: 4,
-    color: THEME.colors.textMuted,
-    fontSize: 12,
-    textAlign: 'center'
-  },
-  sectionTitle: {
-    fontSize: 20,
-    marginVertical: THEME.spacing.lg,
-    textAlign: 'left'
-  },
-  empty: {
-    color: THEME.colors.textMuted,
-    textAlign: 'left'
-  }
-});
+function createStyles(theme) {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.colors.background
+    },
+    content: {
+      paddingHorizontal: theme.spacing.lg,
+      paddingTop: theme.spacing.xxl,
+      paddingBottom: 120
+    },
+    profileCard: {
+      backgroundColor: theme.colors.surface,
+      borderRadius: theme.radius.lg,
+      padding: theme.spacing.md,
+      flexDirection: 'row',
+      alignItems: 'center',
+      ...theme.shadow
+    },
+    avatar: {
+      width: 56,
+      height: 56,
+      borderRadius: 28
+    },
+    userInfo: {
+      flex: 1,
+      marginLeft: theme.spacing.sm
+    },
+    name: {
+      fontSize: 17,
+      textAlign: 'left'
+    },
+    email: {
+      color: theme.colors.textMuted,
+      marginTop: 2,
+      fontSize: 13,
+      textAlign: 'left'
+    },
+    themeCard: {
+      marginTop: theme.spacing.md,
+      borderRadius: theme.radius.md,
+      backgroundColor: theme.colors.surface,
+      padding: theme.spacing.md,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      ...theme.shadow
+    },
+    themeSub: {
+      color: theme.colors.textMuted,
+      fontSize: 12,
+      marginTop: 2
+    },
+    metaGrid: {
+      marginTop: theme.spacing.md,
+      flexDirection: 'row',
+      gap: theme.spacing.sm
+    },
+    metaItem: {
+      flex: 1,
+      padding: theme.spacing.md,
+      borderRadius: theme.radius.md,
+      backgroundColor: theme.colors.surface,
+      alignItems: 'center',
+      ...theme.shadow
+    },
+    metaValue: {
+      fontSize: 17,
+      textAlign: 'center'
+    },
+    metaLabel: {
+      marginTop: 4,
+      color: theme.colors.textMuted,
+      fontSize: 12,
+      textAlign: 'center'
+    },
+    sectionTitle: {
+      fontSize: 20,
+      marginVertical: theme.spacing.lg,
+      textAlign: 'left'
+    },
+    empty: {
+      color: theme.colors.textMuted,
+      textAlign: 'left'
+    }
+  });
+}
